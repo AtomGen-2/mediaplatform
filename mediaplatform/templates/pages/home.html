@@ -1,0 +1,24 @@
+{% extends "tweets/base.html" %}
+{% block heading %}YE HOME HAI{% endblock %}
+{% block content %}
+<h1>This is tweet app </h1>
+<div id="tweets">REPLACE ME</div>
+<script>
+const tweetsElement = document.getElementById("tweets")
+tweetsElement.innerHTML = "Loading..."
+const xhr = new XMLHttpRequest()
+const method='GET'
+const url = "/tweets"
+const responseType ="json"
+
+xhr.responseType = responseType
+xhr.open(method, url)
+xhr.onload = function() {
+    const serverResponse = xhr.response
+    // "response" corresponds to the data point that is rendered in "/tweets". views.py => tweet_list_view
+    var listedItems = serverResponse.response
+    console.log(listedItems)
+}
+xhr.send()
+</script>
+{% endblock %}
