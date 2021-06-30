@@ -1,24 +1,35 @@
 {% extends "tweets/base.html" %}
-{% block heading %}YE HOME HAI{% endblock %}
+{% block heading %}
+YE HOME HAI
+{% endblock %}
+
 {% block content %}
 <h1>This is tweet app </h1>
-<div id="tweets">REPLACE ME</div>
+<div id="tweets">LOADING...</div>
+
 <script>
 const tweetsElement = document.getElementById("tweets")
-tweetsElement.innerHTML = "Loading..."
+{% comment %} var el1 = "<h1>hello1</h1>"
+var el2 = "<h1>hello2</h1>"
+var el3 = "<h1>hello3</h1>"
+tweetsElement.innerHTML = el1 + el2 + el3 {% endcomment %}
 const xhr = new XMLHttpRequest()
 const method='GET'
 const url = "/tweets"
 const responseType ="json"
-
 xhr.responseType = responseType
 xhr.open(method, url)
 xhr.onload = function() {
     const serverResponse = xhr.response
     // "response" corresponds to the data point that is rendered in "/tweets". views.py => tweet_list_view
-    var listedItems = serverResponse.response
-    console.log(listedItems)
+    const listedItems = serverResponse.response
+    var finalTweetStr = ""
+    listedItems.map((item) => {
+        console.log(item)
+    }) 
+    // listdItems is an array, we need to loop through it
 }
 xhr.send()
 </script>
+
 {% endblock %}
