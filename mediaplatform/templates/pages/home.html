@@ -1,11 +1,17 @@
-{% extends "tweets/base.html" %}
-{% block heading %}
-YE HOME HAI
-{% endblock %}
+{% include "tweets/base.html" %}
 
 {% block content %}
-<h1>This is tweet app </h1>
-<div id="tweets">LOADING...</div>
+<div class='row text-center'>
+    <div class='col'>
+        <h1>Welcome!</h1>
+    </div>
+</div>
+
+<div style="color: blue">
+    <div id="tweets">
+        LOADING...
+    </div>
+</div>
 
 <script>
 const tweetsElement = document.getElementById("tweets")
@@ -13,8 +19,18 @@ const xhr = new XMLHttpRequest()
 const method='GET'
 const url = "/tweets"
 const responseType ="json"
+
+const handleDidLike = (tweet_id, tweet_likes) => {
+    tweet_likes = tweet_likes + 1
+    console.log(tweet_id)
+    console.log(tweet_likes)
+}
+
+function LikeBtn(tweet){
+    return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id + "," + tweet.likes+")>" + tweet.likes + " LIKE</button>"
+}
 function formatTweetElement(tweet){
-     var formattedTweet = "<div class = 'mb-4'><h1>" + tweet.id + "</h1>" + "<p>" + tweet.content + "</p></div>"
+     var formattedTweet = "<div class = 'col-12 border-bottom border-top py-3 mb-4 tweet id='tweet-'" + tweet.id + "'><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
      return formattedTweet;
 } 
 xhr.responseType = responseType
