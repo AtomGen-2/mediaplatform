@@ -9,14 +9,14 @@ YE HOME HAI
 
 <script>
 const tweetsElement = document.getElementById("tweets")
-{% comment %} var el1 = "<h1>hello1</h1>"
-var el2 = "<h1>hello2</h1>"
-var el3 = "<h1>hello3</h1>"
-tweetsElement.innerHTML = el1 + el2 + el3 {% endcomment %}
 const xhr = new XMLHttpRequest()
 const method='GET'
 const url = "/tweets"
 const responseType ="json"
+function formatTweetElement(tweet){
+     var formattedTweet = "<div class = 'mb-4'><h1>" + tweet.id + "</h1>" + "<p>" + tweet.content + "</p></div>"
+     return formattedTweet;
+} 
 xhr.responseType = responseType
 xhr.open(method, url)
 xhr.onload = function() {
@@ -25,8 +25,10 @@ xhr.onload = function() {
     const listedItems = serverResponse.response
     var finalTweetStr = ""
     listedItems.map((item) => {
-        console.log(item)
-    }) 
+        var currentItem = formatTweetElement(item)
+        finalTweetStr = finalTweetStr + currentItem
+    })
+     tweetsElement.innerHTML = finalTweetStr;
     // listdItems is an array, we need to loop through it
 }
 xhr.send()
