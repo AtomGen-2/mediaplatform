@@ -15,6 +15,7 @@ Including another URLconf
 """
 from tweets.views import tweet_list_view
 from tweets.views import tweet_detail_view
+from tweets.views import tweet_create_view
 from django.contrib import admin
 from django.urls import path
 from tweets.views import home_view;
@@ -24,5 +25,6 @@ urlpatterns = [
     path('', home_view),
     path('tweets/<int:tweet_id>', tweet_detail_view),
     path('tweets', tweet_list_view), 
+    path('create_tweet', tweet_create_view)
 ]
 

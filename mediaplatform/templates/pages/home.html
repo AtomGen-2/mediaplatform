@@ -7,7 +7,7 @@
     </div>
 </div>
 
-<div style="color: blue">
+<div style="color: blue; ">
     <div id="tweets">
         LOADING...
     </div>
@@ -30,7 +30,7 @@ function LikeBtn(tweet){
     return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id + "," + tweet.likes+")>" + tweet.likes + " LIKE</button>"
 }
 function formatTweetElement(tweet){
-     var formattedTweet = "<div class = 'col-12 border-bottom border-top py-3 mb-4 tweet id='tweet-'" + tweet.id + "'><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
+     var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet id='tweet-'" + tweet.id + "'><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
      return formattedTweet;
 } 
 xhr.responseType = responseType
