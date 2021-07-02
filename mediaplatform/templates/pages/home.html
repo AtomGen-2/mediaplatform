@@ -5,7 +5,19 @@
     <div class='col'>
         <h1>Welcome!</h1>
     </div>
-</div>
+</div> 
+
+<div class='col-md-4 mx-auto col-10'>
+    <div class='col-md-4 mx-auto col-10'>
+        <form class='form center' method='POST' id='create-form-element' action='/create_tweet'>
+            {% csrf_token %} 
+            <input type = 'hidden' value="/" name = "next" />
+            {% comment %} name='content'is mandatory {% endcomment %}
+            <input type = 'text' name='content' placeholder="Your tweet..."/>
+            <button type="Submit" class="btn btn-primary">Tweet</button>
+        </form>
+    </div>
+</div> 
 
 <div style="color: blue; ">
     <div id="tweets">
@@ -14,11 +26,40 @@
 </div>
 
 <script>
+
+const handleFormSubmit = (event) => {
+    event?.preventDefault()
+    console.log(event)
+}
+
 const tweetsElement = document.getElementById("tweets")
-const xhr = new XMLHttpRequest()
-const method='GET'
-const url = "/tweets"
-const responseType ="json"
+const createTweetElement = document.getElementById("create-form-element")
+
+createTweetElement.addEventListener("submit", handleFormSubmit)
+
+const loadTweets = (tweetsElement) => {
+    const xhr = new XMLHttpRequest()
+    const method='GET'
+    const url = "/tweets"
+    const responseType ="json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function() {
+        const serverResponse = xhr.response
+        // "response" corresponds to the data point that is rendered in "/tweets". views.py => tweet_list_view
+        const listedItems = serverResponse.response
+        var finalTweetStr = ""
+        listedItems.map((item) => {
+            var currentItem = formatTweetElement(item)
+            finalTweetStr = finalTweetStr + currentItem
+        })
+        tweetsElement.innerHTML = finalTweetStr;
+        // listdItems is an array, we need to loop through it
+    }
+    xhr.send()
+}
+
+loadTweets(tweetsElement)
 
 const handleDidLike = (tweet_id, tweet_likes) => {
     tweet_likes = tweet_likes + 1
@@ -29,25 +70,13 @@ const handleDidLike = (tweet_id, tweet_likes) => {
 function LikeBtn(tweet){
     return "<button class='btn btn-primary btn-sm' onclick=handleDidLike(" + tweet.id + "," + tweet.likes+")>" + tweet.likes + " LIKE</button>"
 }
+
 function formatTweetElement(tweet){
      var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet id='tweet-'" + tweet.id + "'><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
      return formattedTweet;
 } 
-xhr.responseType = responseType
-xhr.open(method, url)
-xhr.onload = function() {
-    const serverResponse = xhr.response
-    // "response" corresponds to the data point that is rendered in "/tweets". views.py => tweet_list_view
-    const listedItems = serverResponse.response
-    var finalTweetStr = ""
-    listedItems.map((item) => {
-        var currentItem = formatTweetElement(item)
-        finalTweetStr = finalTweetStr + currentItem
-    })
-     tweetsElement.innerHTML = finalTweetStr;
-    // listdItems is an array, we need to loop through it
-}
-xhr.send()
+
+{% comment %}  {% endcomment %}
 </script>
 
 {% endblock %}
